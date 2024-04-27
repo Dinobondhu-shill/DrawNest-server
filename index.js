@@ -1,7 +1,7 @@
 const express = require('express')
 const cors = require('cors');
 require('dotenv').config()
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const app = express()
 const port = process.env.PORT || 5000
 
@@ -37,10 +37,24 @@ async function run() {
       const result = await cursor.toArray();
       res.send(result)
     })
+    // item details 
+    app.get('/artCollection/:id', async (req, res)=>{
+      const id = req.params.id
+      const query = {_id : new ObjectId(id)}
+      const result = await artCollection.findOne(query)
+      res.send(result)
+    })
+    // app.get('/artCollection/:email', async (req, res) =>{
+    //   const email = req.params.email
+    //   const query = {email : email}
+    //   const result = await artCollection.find(query).toArray()
+    //   res.send(result)
+    // })
     app.post('/artCollection', async (req, res)=>{
-      const newItem = req.body
-      console.log(newItem)
-      const result = artCollection.insertOne(newItem)
+      const newItem = req.body;
+      console.log(newItem);
+      const result =await artCollection.insertOne(newItem);
+      res.send(result);
     })
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
