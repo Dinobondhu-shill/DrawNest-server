@@ -59,6 +59,7 @@ async function run() {
       const result = await artCollection.find(filter).toArray();
       res.send(result)
     })
+    // post data
     app.post('/artCollection', async (req, res) => {
       const newItem = req.body;
       console.log(newItem);
