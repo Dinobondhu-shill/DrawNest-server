@@ -45,7 +45,7 @@ async function run() {
       res.send(result)
     })
 //  get data using email
-app.get('/artCollectionbyEmail/:email', async(req, res)=>{
+app.get('/artCollection/email/:email', async(req, res)=>{
   const email = req.params.email;
   const filter = {User_Email : email};
   const result = await artCollection.find(filter).toArray();
@@ -56,6 +56,12 @@ app.get('/artCollectionbyEmail/:email', async(req, res)=>{
       console.log(newItem);
       const result =await artCollection.insertOne(newItem);
       res.send(result);
+    })
+    app.delete('/artCollection/:id', async(req, res)=>{
+      const id = req.params.id;
+      const query = {_id: new ObjectId(id)};
+      const result = await artCollection.deleteOne(query)
+      res.send(result)
     })
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
