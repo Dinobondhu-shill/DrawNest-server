@@ -39,17 +39,18 @@ async function run() {
     })
     // item details 
     app.get('/artCollection/:id', async (req, res)=>{
-      const id = req.params.id
-      const query = {_id : new ObjectId(id)}
-      const result = await artCollection.findOne(query)
+      const id = req.params.id;
+      const query = {_id : new ObjectId(id)};
+      const result = await artCollection.findOne(query);
       res.send(result)
     })
-    // app.get('/artCollection/:email', async (req, res) =>{
-    //   const email = req.params.email
-    //   const query = {email : email}
-    //   const result = await artCollection.find(query).toArray()
-    //   res.send(result)
-    // })
+//  get data using email
+app.get('/artCollectionbyEmail/:email', async(req, res)=>{
+  const email = req.params.email;
+  const filter = {User_Email : email};
+  const result = await artCollection.find(filter).toArray();
+  res.send(result)
+})
     app.post('/artCollection', async (req, res)=>{
       const newItem = req.body;
       console.log(newItem);
