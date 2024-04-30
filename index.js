@@ -32,7 +32,7 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
-    await client.connect();
+    // await client.connect();
 
     const artCollection = client.db("DrawNest").collection("artCollection")
 
@@ -57,6 +57,13 @@ async function run() {
         User_Email: email
       };
       const result = await artCollection.find(filter).toArray();
+      res.send(result)
+    })
+    // getting subcategory data
+    app.get('/artCollection/category/:category', async(req, res)=>{
+      const category = req.params.category;
+      const filter = {category: { $regex: category, $options: "i" }};
+      const result = await artCollection.find(filter).toArray()
       res.send(result)
     })
     // post data
@@ -90,6 +97,7 @@ async function run() {
           processing_time: updatedItem.processing_time,
           stockStatus: updatedItem.stockStatus,
           image: updatedItem.image,
+          category: updatedItem.category
         }
       }
       const result = await artCollection.updateOne(filter, Item, options)
